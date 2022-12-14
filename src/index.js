@@ -11,26 +11,26 @@ import { logUnusedProperty } from "./logger.js";
 
 
 const checkAllUnusedStyle = () => {
-  const questions = [
-    {
-      type: "input",
-      name: "path",
-      message: "Your starting path? (eg ./app/containers/health-pay)",
-    },
-  ];
+  // const questions = [
+  //   {
+  //     type: "input",
+  //     name: "path",
+  //     message: "Your starting path? (eg ./app/containers/health-pay)",
+  //   },
+  // ];
   
-  let START_PATH;
+  // let START_PATH;
   
-  inquirer.prompt(questions).then((answers) => {
-    START_PATH = answers.path;
-  });
+  // inquirer.prompt(questions).then((answers) => {
+  //   START_PATH = answers.path;
+  // });
 
-  console.log("script is running?")
+  // console.log("script is running?")
 
   const values = [];
   
 
-  fromDir(START_PATH, "styles.ts", values);
+  fromDir("./app/containers/health-pay", "styles.ts", values);
   const styles = getUnusedStyle(values);
 
   if (styles.length > 0) {
