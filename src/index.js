@@ -24,7 +24,9 @@ const checkAllUnusedStyle = () => {
   inquirer.prompt(questions).then((answers) => {
     START_PATH = answers.path;
   });
-  
+
+  console.log("script is running?")
+
   const values = [];
   if (!START_PATH) {
     return;
