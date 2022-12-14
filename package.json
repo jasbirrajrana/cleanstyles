@@ -11,6 +11,7 @@
     "lint:fix": "eslint --fix",
     "cleanit":"node src/index.js"
   },
+  "bin": "./src/index.js",
   "keywords": [
     "react-native"
   ],
