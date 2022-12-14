@@ -8,21 +8,23 @@ import inquirer from "inquirer";
 import { fromDir, getObjectStyleFromFile } from "./utils.js";
 import { logUnusedProperty } from "./logger.js";
 
-const questions = [
-  {
-    type: "input",
-    name: "path",
-    message: "Your starting path? (eg ./app/containers/health-pay)",
-  },
-];
 
-let START_PATH;
-
-inquirer.prompt(questions).then((answers) => {
-  START_PATH = answers.path;
-});
 
 const checkAllUnusedStyle = () => {
+  const questions = [
+    {
+      type: "input",
+      name: "path",
+      message: "Your starting path? (eg ./app/containers/health-pay)",
+    },
+  ];
+  
+  let START_PATH;
+  
+  inquirer.prompt(questions).then((answers) => {
+    START_PATH = answers.path;
+  });
+  
   const values = [];
   if (!START_PATH) {
     return;
