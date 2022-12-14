@@ -5,7 +5,7 @@ import path from "path";
 import chalk from "chalk";
 import { strContains } from "lodash-contrib";
 import inquirer from "inquirer";
-import { fromDir, getObjectStyleFromFile } from "./utils.js";
+import { fromDir, getObjectStyleFromFile,removeNullFromAray } from "./utils.js";
 import { logUnusedProperty } from "./logger.js";
 
 
