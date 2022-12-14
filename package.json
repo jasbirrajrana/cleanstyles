@@ -1,9 +1,10 @@
 {
-  "name": "cleanstyles",
+  "name": "@jasbirrana/cleanstyles",
   "version": "1.0.0",
   "description": "project to detect unused stylesheet in react-native codebase(designed by jasbirrana)",
   "main": "index.ts",
   "type": "module",
+  "repository": "git://github.com/jasbirrajrana/cleanstyles.git",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint",
