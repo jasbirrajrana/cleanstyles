@@ -28,9 +28,7 @@ const checkAllUnusedStyle = () => {
   console.log("script is running?")
 
   const values = [];
-  if (!START_PATH) {
-    return;
-  }
+  
 
   fromDir(START_PATH, "styles.ts", values);
   const styles = getUnusedStyle(values);
