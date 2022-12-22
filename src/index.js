@@ -80,9 +80,7 @@ const init = async () => {
 
   console.log(chalk.white.bgGreen.bold(`Your Starting Path is:${path}`));
 
-  findUnusedStyles(
-    "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/screens"
-  );
+  findUnusedStyles(path);
 };
 
 init();
