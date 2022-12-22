@@ -13,9 +13,6 @@ import {
 } from "./utils.js";
 import { askQuestions } from "./logger.js";
 
-const dirname_ =
-  "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/screens/post-payment";
-
 const findUnusedStyles = (dir) => {
   const styles = searchForStyles(dir);
   Object.keys(styles).forEach((stylePath) => {

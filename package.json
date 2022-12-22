@@ -1,7 +1,7 @@
 {
   "name": "cleanstyles",
-  "version": "2.0.4",
-  "description": "project to detect unused stylesheet in react-native codebase",
+  "version": "2.0.5",
+  "description": "script to detect unused stylesheet in react-native codebase",
   "main": "src/index.js",
   "type": "module",
   "repository": "git://github.com/jasbirrajrana/cleanstyles.git",
