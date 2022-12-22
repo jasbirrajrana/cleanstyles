@@ -78,11 +78,15 @@ const init = async () => {
   );
   const { path } = await askQuestions();
 
-  console.log(path, "path-path", process.cwd());
+  console.log(process.cwd() + "/" + path);
 
-  console.log(chalk.white.bgGreen.bold(`Your Starting Path is:${path}`));
+  console.log(
+    chalk.white.bgGreen.bold(
+      `Your Starting Path is:${process.cwd() + "/" + path}`
+    )
+  );
 
-  findUnusedStyles(path);
+  findUnusedStyles(process.cwd() + "/" + path);
 };
 
 init();
