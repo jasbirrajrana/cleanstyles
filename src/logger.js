@@ -1,16 +1,13 @@
-import chalk from "chalk";
-import { strContains } from "lodash-contrib";
-export const logUnusedProperty = (item) => {
-  if (item) {
-    if (strContains(item, "create")) {
-      const splitedUnusedStyle = item?.split(".create({");
-      console.log(
-        chalk.bold.underline(
-          `   -> styles.${splitedUnusedStyle[splitedUnusedStyle?.length - 1]}`
-        )
-      );
-    } else {
-      console.log(chalk.bold.underline(`   -> ${item}`));
-    }
-  }
+import inquirer from "inquirer";
+
+export const askQuestions = () => {
+  const questions = [
+    {
+      type: "input",
+      name: "path",
+      message: "Your starting path? (eg ./app/containers/health-pay)",
+    },
+  ];
+
+  return inquirer.prompt(questions);
 };

@@ -1,103 +1,88 @@
 #!/usr/bin/env node
 
+
+import chalk from "chalk";
 import fs from "fs";
 import path from "path";
-import chalk from "chalk";
-import { strContains } from "lodash-contrib";
-import inquirer from "inquirer";
-import { fromDir, getObjectStyleFromFile,removeNullFromAray } from "./utils.js";
-import { logUnusedProperty } from "./logger.js";
+import figlet from "figlet";
+import {
+  getFilesInDir,
+  getUsedStyles,
+  isStyleImported,
+  searchForStyles,
+} from "./utils.js";
+import { askQuestions } from "./logger.js";
 
+const dirname_ =
+  "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/components/payment-summary-drawer";
 
+const findUnusedStyles = (dir) => {
+  const styles = searchForStyles(dir);
+  Object.keys(styles).forEach((stylePath) => {
+    let importName;
+    getFilesInDir(dir).forEach((file) => {
+      if (file !== stylePath) {
+        const fileContents = fs.readFileSync(file, "utf8");
+        if (
+          isStyleImported(
+            stylePath,
+            path.basename(stylePath),
+            file,
+            fileContents
+          )
+        ) {
+          importName = path.basename(stylePath).split(".")[0];
+        }
+      }
+    });
 
-const checkAllUnusedStyle = () => {
-  // const questions = [
-  //   {
-  //     type: "input",
-  //     name: "path",
-  //     message: "Your starting path? (eg ./app/containers/health-pay)",
-  //   },
-  // ];
-  
-  // let START_PATH;
-  
-  // inquirer.prompt(questions).then((answers) => {
-  //   START_PATH = answers.path;
-  // });
+    if (importName) {
+      let usedStyles;
+      getFilesInDir(dir).forEach((file) => {
+        if (file !== stylePath) {
+          const fileContents = fs.readFileSync(file, "utf8");
+          usedStyles = getUsedStyles(
+            importName,
+            styles[stylePath],
+            fileContents
+          );
+        }
+      });
 
-  // console.log("script is running?")
+      const unusedStyles = styles[stylePath].filter(
+        (styleKey) => !usedStyles.has(styleKey)
+      );
 
-  const values = [];
-  
-
-  fromDir("./app/containers/health-pay", "styles.ts", values);
-  const styles = getUnusedStyle(values);
-
-  if (styles.length > 0) {
-    const countError = styles.reduce((sum, item) => sum + item.length, 0);
-    console.log(chalk.red.bold(`\n ✖ Encontrado -->${countError} problem \n`));
-    process.exit(500);
-  } else {
-    console.log(chalk.green.bold("All good"));
-  }
+      if (unusedStyles.length > 0) {
+        console.log(
+          chalk.bold.italic.magentaBright(`Unused styles in ${stylePath}`)
+        );
+        unusedStyles.forEach((unusedStyle) => {
+          console.log(chalk.bold.red(`-> styles.${unusedStyle}`));
+        });
+      }
+    }
+  });
 };
 
-const getUnusedStyle = (pathStyles) =>
-  pathStyles
-    .map((pathStyle) => {
-      const data = fs.readFileSync(pathStyle, "utf-8");
-      const values = getObjectStyleFromFile(data);
-      if (!values) {
-        return;
-      }
+const init = async () => {
+  console.log(
+    chalk.green(
+      figlet.textSync("CLEAN IT UP", {
+        font: "Ghost",
+        horizontalLayout: "default",
+        verticalLayout: "default",
+        whitespaceBreak: false,
+      })
+    )
+  );
+  const { path } = await askQuestions();
 
-      const styles = values.map((item) => `styles.${item}`);
+  console.log(chalk.white.bgGreen.bold(`Your Starting Path is:${path}`));
 
-      const currentStyleDir = path.dirname(pathStyle);
+  findUnusedStyles(
+    "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/screens"
+  );
+};
 
-      const filesInCwd = fs.readdirSync(currentStyleDir);
-
-      let correspondingIndexFilePath;
-
-      if (
-        filesInCwd.indexOf("styles.ts") !== -1 &&
-        filesInCwd.indexOf("index.tsx") !== -1
-      ) {
-        correspondingIndexFilePath = pathStyle.replace(
-          "styles.ts",
-          "index.tsx"
-        );
-      }
-
-      if (
-        filesInCwd.indexOf("styles.js") !== -1 &&
-        filesInCwd.indexOf("index.js") !== -1
-      ) {
-        correspondingIndexFilePath = pathStyle.replace(
-          "styles.ts",
-          "index.tsx"
-        );
-      }
-
-      if (correspondingIndexFilePath) {
-        const indexData = fs.readFileSync(correspondingIndexFilePath, "utf-8");
-        let unusedStyles = styles.map((item) =>
-          indexData.indexOf(item) === -1 ? item : null
-        );
-        unusedStyles = removeNullFromAray(unusedStyles);
-
-        console.log(
-          chalk.red.bold(
-            `\n -> ${correspondingIndexFilePath} (${unusedStyles?.length}) \n`
-          )
-        );
-        unusedStyles.forEach((item) => {
-          logUnusedProperty(item);
-        });
-        return unusedStyles;
-      }
-      return null;
-    })
-    .filter((item) => item);
-
-checkAllUnusedStyle();
+init();

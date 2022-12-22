@@ -1,7 +1,7 @@
 {
   "name": "cleanstyles",
-  "version": "1.0.8",
-  "description": "project to detect unused stylesheet in react-native codebase(coded by jasbirrana)",
+  "version": "1.0.9",
+  "description": "project to detect unused stylesheet in react-native codebase",
   "main": "src/index.js",
   "type": "module",
   "repository": "git://github.com/jasbirrajrana/cleanstyles.git",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "cleanit":"node src/index.js"
+    "cleanit": "node src/index.js"
   },
   "bin": "./src/index.js",
   "keywords": [
@@ -19,8 +19,10 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^5.2.0",
+    "figlet": "^1.5.2",
     "inquirer": "^9.1.4",
-    "lodash-contrib": "^4.1200.1"
+    "lodash": "^4.17.21",
+    "shelljs": "^0.8.5"
   },
   "devDependencies": {
     "eslint": ">=8.27.0",
