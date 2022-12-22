@@ -14,7 +14,7 @@ import {
 import { askQuestions } from "./logger.js";
 
 const dirname_ =
-  "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/components/payment-summary-drawer";
+  "/Users/jasbirrana/Desktop/Jasbirrana/HRx_portal/app/containers/health-pay/screens/post-payment";
 
 const findUnusedStyles = (dir) => {
   const styles = searchForStyles(dir);
@@ -77,6 +77,8 @@ const init = async () => {
     )
   );
   const { path } = await askQuestions();
+
+  console.log(path, "path-path");
 
   console.log(chalk.white.bgGreen.bold(`Your Starting Path is:${path}`));
 
