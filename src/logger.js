@@ -5,7 +5,7 @@ export const askQuestions = () => {
     {
       type: "input",
       name: "path",
-      message: "Your starting path? (eg ./app/containers/health-pay)",
+      message: "Your starting path? (eg app/containers/health-pay)",
     },
   ];
 

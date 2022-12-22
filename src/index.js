@@ -78,8 +78,6 @@ const init = async () => {
   );
   const { path } = await askQuestions();
 
-  console.log(process.cwd() + "/" + path);
-
   console.log(
     chalk.white.bgGreen.bold(
       `Your Starting Path is:${process.cwd() + "/" + path}`
