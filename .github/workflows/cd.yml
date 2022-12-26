@@ -25,13 +25,40 @@ jobs:
       # set up git since we will later push to the repo
       - run: git config --global user.name "GitHub CD bot"
       - run: git config --global user.email "github-cd-bot@example.com"
-      # upgrade npm version in package.json to the tag used in the release.
-      - run: npm version prerelease --preid=alpha.1
-      # publish to NPM -> there is one caveat, continue reading for the fix
-      - run: npm publish --tag=alpha.1
+
+      - name: Bump release version
+        if: startsWith(github.event.inputs.release-type,'pre') != true
+        run: | 
+          echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
+          echo "RELEASE_TAG=latest" >> $GITHUB_ENV
+        env: 
+          RELEASE_TYPE: ${{github.event.inputs.release-type}}
+
+        - name: Bump pre-release version
+        if: startsWith(github.event.inputs.release-type, 'pre')
+        run: |
+          echo "NEW_VERSION=$(npm --no-git-tag-version --preid=beta version $RELEASE_TYPE
+          echo "RELEASE_TAG=beta" >> $GITHUB_ENV
+        env:
+          RELEASE_TYPE: ${{ github.event.inputs.release-type }}
+        # Commit changes
+      - name: Commit CHANGELOG.md and package.json changes and create tag
+        run: |
+          git add "package.json"
+          git add "CHANGELOG.md"
+          git commit -m "chore: release ${{ env.NEW_VERSION }}"
+          git tag ${{ env.NEW_VERSION }}
+      - name: Publish
+        run: npm publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
         env:
           # Use a token to publish to NPM. See below for how to set it up
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # Push repository changes
+      - name: Push changes to repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push origin && git push --tags
       # push the version changes to GitHub
       - run: git push
         env:
