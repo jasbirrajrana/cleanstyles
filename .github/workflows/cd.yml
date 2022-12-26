@@ -14,15 +14,6 @@ jobs:
         # "ref" specifies the branch to check out.
         # "github.event.release.target_commitish" is a global variable and specifies the branch the release targeted
         ref: ${{ github.event.release.target_commitish }}
-    - name: Install dependencies
-      run : | 
-        if [ -e yarn.lock]; then
-        yarn install --frozen-lockfile
-        elif [-e package-lock.json]; then
-        npm ci
-        else
-        npm i
-        fi
     # install Node.js
     - name: Use Node.js 16
       uses: actions/setup-node@v2
@@ -30,6 +21,8 @@ jobs:
         node-version: 16
         # Specifies the registry, this field is required!
         registry-url: https://registry.npmjs.org/
+    # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
+    - run: npm ci
     # set up git since we will later push to the repo
     - run: git config --global user.name "GitHub CD bot"
     - run: git config --global user.email "github-cd-bot@example.com"
