@@ -22,9 +22,11 @@ jobs:
           registry-url: https://registry.npmjs.org/
       # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
       - run: npm ci
-      # set up git since we will later push to the repo
-      - run: git config --global user.name "GitHub CD bot"
-      - run: git config --global user.email "github-cd-bot@example.com"
+      # Configure Git
+      - name: Git configuration
+        run: |
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
       - name: Bump release version
         if: startsWith(github.event.inputs.release-type,'pre') != true
         run: | 
