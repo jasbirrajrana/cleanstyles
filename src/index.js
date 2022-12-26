@@ -31,23 +31,19 @@ const findUnusedStyles = (dir) => {
           importName = path.basename(stylePath).split(".")[0];
         }
       }
-    });
+});
 
     if (importName) {
-      let usedStyles;
+      let usedStyles=[]
       getFilesInDir(dir).forEach((file) => {
         if (file !== stylePath) {
           const fileContents = fs.readFileSync(file, "utf8");
-          usedStyles = getUsedStyles(
-            importName,
-            styles[stylePath],
-            fileContents
-          );
+          usedStyles=[...usedStyles,...getUsedStyles(importName,styles[stylePath],fileContents)]
         }
       });
 
       const unusedStyles = styles[stylePath].filter(
-        (styleKey) => !usedStyles.has(styleKey)
+        (styleKey) => !usedStyles.includes(styleKey)
       );
 
       if (unusedStyles.length > 0) {
@@ -59,7 +55,9 @@ const findUnusedStyles = (dir) => {
         });
       }
     }
+
   });
+
 };
 
 const init = async () => {
@@ -82,6 +80,7 @@ const init = async () => {
   );
 
   findUnusedStyles(process.cwd() + "/" + path);
+
 };
 
 init();

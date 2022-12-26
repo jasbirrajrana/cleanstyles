@@ -62,13 +62,13 @@ export const isStyleImported = (
   const styleExtension = `.${styleName.split(".")[1]}`;
   const importStatements =
     fileContents.match(/import\s.+from\s(?:'|")(.+)(?:'|");/g) || [];
-  for (const statement of importStatements) {
-    let importPath = statement.split("from")[1].trim().slice(1, -2);
-    if (!path.isAbsolute(importPath)) {
-      importPath = path.join(path.dirname(filePath), importPath);
-    }
-    if (importPath + styleExtension === stylePath) {
-      return true;
+    for (const statement of importStatements) {
+      let importPath = statement.split("from")[1].trim().slice(1, -2);
+      if (!path.isAbsolute(importPath)) {
+        importPath = path.join(path.dirname(filePath), importPath);
+      }
+      if (importPath + styleExtension === stylePath) {
+        return true;
     }
   }
   return false;
@@ -79,7 +79,6 @@ export const getUsedStyles = (importName, styleKeys, fileContents) => {
   const temp = styleKeys.filter((key) => {
     return fileContents.includes(`${importName}.${key}`);
   });
-
   for (const key of temp) {
     usedStyles.add(key);
   }
