@@ -28,10 +28,6 @@ jobs:
     - run: git config --global user.email "github-cd-bot@example.com"
     # upgrade npm version in package.json to the tag used in the release.
     - run: npm version ${{ github.event.release.tag_name }}
-    # build the project
-    - run: npm run build
-    # run tests just in case
-    - run: npm test
     # publish to NPM -> there is one caveat, continue reading for the fix
     - run: npm publish --tag ${{ github.event.release.target_commitish }}
       env:
