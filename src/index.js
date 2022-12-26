@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 
-
-import chalk from "chalk";
-import fs from "fs";
-import path from "path";
-import figlet from "figlet";
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
+import figlet from 'figlet';
 import {
   getFilesInDir,
   getUsedStyles,
   isStyleImported,
   searchForStyles,
-} from "./utils.js";
-import { askQuestions } from "./logger.js";
+} from './utils.js';
+import { askQuestions } from './logger.js';
 
 const findUnusedStyles = (dir) => {
   const styles = searchForStyles(dir);
@@ -19,7 +18,7 @@ const findUnusedStyles = (dir) => {
     let importName;
     getFilesInDir(dir).forEach((file) => {
       if (file !== stylePath) {
-        const fileContents = fs.readFileSync(file, "utf8");
+        const fileContents = fs.readFileSync(file, 'utf8');
         if (
           isStyleImported(
             stylePath,
@@ -28,17 +27,20 @@ const findUnusedStyles = (dir) => {
             fileContents
           )
         ) {
-          importName = path.basename(stylePath).split(".")[0];
+          importName = path.basename(stylePath).split('.')[0];
         }
       }
-});
+    });
 
     if (importName) {
-      let usedStyles=[]
+      let usedStyles = [];
       getFilesInDir(dir).forEach((file) => {
         if (file !== stylePath) {
-          const fileContents = fs.readFileSync(file, "utf8");
-          usedStyles=[...usedStyles,...getUsedStyles(importName,styles[stylePath],fileContents)]
+          const fileContents = fs.readFileSync(file, 'utf8');
+          usedStyles = [
+            ...usedStyles,
+            ...getUsedStyles(importName, styles[stylePath], fileContents),
+          ];
         }
       });
 
@@ -55,32 +57,29 @@ const findUnusedStyles = (dir) => {
         });
       }
     }
-
   });
-
 };
 
 const init = async () => {
   console.log(
     chalk.green(
-      figlet.textSync("CLEAN IT UP", {
-        font: "Ghost",
-        horizontalLayout: "default",
-        verticalLayout: "default",
+      figlet.textSync('CLEAN IT UP', {
+        font: 'Ghost',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
         whitespaceBreak: false,
       })
     )
   );
-  const { path } = await askQuestions();
+  const { path: ansPath } = await askQuestions();
 
   console.log(
     chalk.white.bgGreen.bold(
-      `Your Starting Path is:${process.cwd() + "/" + path}`
+      `Your Starting Path is:${`${process.cwd()}/${ansPath}`}`
     )
   );
 
-  findUnusedStyles(process.cwd() + "/" + path);
-
+  findUnusedStyles(`${process.cwd()}/${path}`);
 };
 
 init();

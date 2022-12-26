@@ -4,37 +4,36 @@ on: [push]
 
 jobs:
   build:
-
     # Run on latest version of ubuntu
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        # "ref" specifies the branch to check out.
-        # "github.event.release.target_commitish" is a global variable and specifies the branch the release targeted
-        ref: ${{ github.event.release.target_commitish }}
-    # install Node.js
-    - name: Use Node.js 16
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16
-        # Specifies the registry, this field is required!
-        registry-url: https://registry.npmjs.org/
-    # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
-    - run: npm ci
-    # set up git since we will later push to the repo
-    - run: git config --global user.name "GitHub CD bot"
-    - run: git config --global user.email "github-cd-bot@example.com"
-    # upgrade npm version in package.json to the tag used in the release.
-    - run: npm version prerelease --preid=alpha.1
-    # publish to NPM -> there is one caveat, continue reading for the fix
-    - run: npm publish --tag=alpha.1
-      env:
-        # Use a token to publish to NPM. See below for how to set it up
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    # push the version changes to GitHub
-    - run: git push
-      env:
-        # The secret is passed automatically. Nothing to configure.
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          # "ref" specifies the branch to check out.
+          # "github.event.release.target_commitish" is a global variable and specifies the branch the release targeted
+          ref: ${{ github.event.release.target_commitish }}
+      # install Node.js
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          # Specifies the registry, this field is required!
+          registry-url: https://registry.npmjs.org/
+      # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
+      - run: npm ci
+      # set up git since we will later push to the repo
+      - run: git config --global user.name "GitHub CD bot"
+      - run: git config --global user.email "github-cd-bot@example.com"
+      # upgrade npm version in package.json to the tag used in the release.
+      - run: npm version prerelease --preid=alpha.1
+      # publish to NPM -> there is one caveat, continue reading for the fix
+      - run: npm publish --tag=alpha.1
+        env:
+          # Use a token to publish to NPM. See below for how to set it up
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # push the version changes to GitHub
+      - run: git push
+        env:
+          # The secret is passed automatically. Nothing to configure.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
