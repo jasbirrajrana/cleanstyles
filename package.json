@@ -1,6 +1,6 @@
 {
   "name": "cleanstyles",
-  "version": "2.0.6",
+  "version": "2.0.7-alpha.1.0",
   "description": "script to detect unused stylesheet in react-native codebase",
   "main": "src/index.js",
   "type": "module",
