@@ -23,10 +23,10 @@ jobs:
       # clean install of your projects' deps. We use "npm ci" to avoid package lock changes
       - run: npm ci
       # Configure Git
-      - name: Git configuration
-        run: |
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub Actions"
+      # - name: Git configuration
+      #   run: |
+      #     git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     git config --global user.name "GitHub Actions"
       - name: Bump release version
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: | 
@@ -34,7 +34,6 @@ jobs:
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
         env: 
           RELEASE_TYPE: ${{github.event.inputs.release-type}}
-
         - name: Bump pre-release version
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
