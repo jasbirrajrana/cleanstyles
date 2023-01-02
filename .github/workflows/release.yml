@@ -24,6 +24,8 @@ jobs:
       - run: npm ci
       - run: git config --global user.name "Github CD bot"
       - run: git config --global user.email "github-cd-bot@example.com"
+      - name: Install semantic-release extra plugins
+      - run: npm install --save-dev @semantic-release/changelog @semantic-release/git
       # Configure Git
       # - name: Git configuration
       #   run: |
@@ -50,8 +52,9 @@ jobs:
       #     git add "CHANGELOG.md"
       #     git commit -m "chore: release ${{ env.NEW_VERSION }}"
       #     git tag ${{ env.NEW_VERSION }}
+
       - name: Publish
-        run: npm publish --verbose --access public
+        run: npx semantic-release
         env:
           # Use a token to publish to NPM. See below for how to set it up
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
