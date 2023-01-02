@@ -26,7 +26,7 @@ jobs:
       - run: git config --global user.email "github-cd-bot@example.com"
       - name: Install semantic-release extra plugins
         uses: actions/setup-node@v2
-        - run: npm install --save-dev @semantic-release/changelog @semantic-release/git
+      - run: npm install --save-dev @semantic-release/changelog @semantic-release/git
       # Configure Git
       # - name: Git configuration
       #   run: |
